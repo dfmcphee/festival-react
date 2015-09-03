@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Festival</title>
+  </head>
+  <body>
+    <h1>Festival</h1>
+
+    <section>
+      <input id="name" placeholder="Enter your name" />
+      <button id="join">Join</button>
+    </section>
+
+    <h2>Online Users</h2>
+    <section id="online-users"></section>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+      var socket = io();
+
+      socket.on('onlineUsersUpdated', function(data){
+        $onlineUsers = $('#online-users').empty();
+
+        for (userId in data.onlineUsers) {
+          var user = data.onlineUsers[userId];
+          var name = user.name + ' - ' + userId;
+          $('<p />').append(name).appendTo($onlineUsers);
+        }
+      });
+
+      $('#join').click(function(){
+        socket.emit('identify', $('#name').val());
+        $('#name').val('');
+      });
+    </script>
+  </body>
+</html>
