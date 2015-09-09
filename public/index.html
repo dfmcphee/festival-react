@@ -2,20 +2,14 @@
 <html>
   <head>
     <title>Festival</title>
+    <script src="js/vendor/react.js"></script>
+    <script src="js/vendor/JSXTransformer.js"></script>
+    <script src="js/vendor/underscore.min.js"></script>
   </head>
   <body>
     <h1>Festival</h1>
-
-    <section>
-      <input id="name" placeholder="Enter your name" />
-      <button id="join">Join</button>
-    </section>
-
-    <h2>Online Users</h2>
-    <section id="online-users"></section>
-
+    <div id="mount"></div>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
-    <script src="app.js"></script>
+    <script type="text/jsx" src="js/app.jsx"></script>
   </body>
 </html>

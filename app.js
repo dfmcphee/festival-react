@@ -22,14 +22,26 @@ io.on('connection', function(socket){
   // Add connected user to list
   onlineUsers[socket.id] = {
     id: socket.id,
-    name: 'Anonymous'
+    name: 'Anonymous',
+    location: false
   };
 
   updateUserList();
 
   // Event when a user identifies themselves
   socket.on('identify', function(name){
-    onlineUsers[socket.id].name = name;
+    if (name !== '') {
+      onlineUsers[socket.id].name = name;
+    } else {
+      onlineUsers[socket.id].name = 'Anonymous';
+    }
+    updateUserList();
+  });
+
+  // Event when a user identifies themselves
+  socket.on('locate', function(geolocation){
+    console.log(geolocation);
+    onlineUsers[socket.id].location = geolocation;
     updateUserList();
   });
 
