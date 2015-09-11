@@ -1,9 +1,10 @@
 var express = require('express');
-var app = express();
+var app = module.exports.app = exports.app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
 app.use(express.static('public'));
+app.use(require('connect-livereload')());
 
 // Initialize empty user list
 var onlineUsers = {};

@@ -47,45 +47,4 @@ var Festival = React.createClass({
   }
 });
 
-// UserList component
-var UserList = React.createClass({
-  // Render a single user list item
-  renderItem: function(user) {
-    return (
-      <ListItem user={user} />
-    )
-  },
-
-  // Render user list component
-  render: function(){
-    return (
-      <div>
-        {this.props.users.map(this.renderItem)}
-      </div>
-    )
-  }
-});
-
-// ListItem component
-var ListItem = React.createClass({
-  // Render the location section for list item
-  renderLocation: function() {
-    if (this.props.user.location) {
-      return (
-        <p>{this.props.user.location.latitude} {this.props.user.location.longitude}</p>
-      )
-    }
-  },
-
-  // Render the list item component
-  render: function(){
-    return (
-      <div key={this.props.user}>
-        <h3>{this.props.user.name}</h3>
-        {this.renderLocation()}
-      </div>
-    )
-  }
-});
-
 React.render(<Festival/>, document.getElementById('mount'));
