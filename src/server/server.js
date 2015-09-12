@@ -2,7 +2,10 @@ import express from 'express';
 import React from 'react';
 import http from 'http';
 import io from 'socket.io';
+<<<<<<< HEAD
 import nedb from 'nedb';
+=======
+>>>>>>> master
 
 var app = express();
 var server = http.Server(app);
@@ -15,6 +18,7 @@ var db = {};
 db.users = new nedb();
 
 // Send an updated userlist to all clients
+<<<<<<< HEAD
 function sendUpdatedUserList() {
   // Find all users from db
   db.users.find({}, function (err, users) {
@@ -24,6 +28,11 @@ function sendUpdatedUserList() {
         onlineUsers: users
       });
     }
+=======
+function updateUserList() {
+  sockets.emit('onlineUsersUpdated', {
+    onlineUsers: onlineUsers
+>>>>>>> master
   });
 }
 
