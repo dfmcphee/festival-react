@@ -1,60 +1,99 @@
 import express from 'express';
 import React from 'react';
+import http from 'http';
+import io from 'socket.io';
+import nedb from 'nedb';
+
 var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var server = http.Server(app);
+var sockets = io(server);
 
 app.use(express.static('views'));
 
-// Initialize empty user list
-var onlineUsers = {};
+var db = {};
+
+db.users = new nedb();
 
 // Send an updated userlist to all clients
-function updateUserList() {
-  io.emit('onlineUsersUpdated', {
-    onlineUsers: onlineUsers
+function sendUpdatedUserList() {
+  // Find all users from db
+  db.users.find({}, function (err, users) {
+    if (!err) {
+      // Send updated users to clients
+      sockets.emit('onlineUsersUpdated', {
+        onlineUsers: users
+      });
+    }
   });
 }
 
+// Callback when a user is updated
+function usersUpdated(err, user) {
+  if (!err) {
+    // If no errors in save, send updated user list
+    sendUpdatedUserList();
+  }
+}
+
 // Event every time a user connects
-io.on('connection', function(socket){
+sockets.on('connection', function(socket){
   console.log('a user connected');
 
-  // Add connected user to list
-  onlineUsers[socket.id] = {
-    id: socket.id,
+  // Create new user object
+  var newUser = {
+    socket_id: socket.id,
     name: 'Anonymous',
     location: false
   };
 
-  updateUserList();
+  // Inert into db
+  db.users.insert(newUser, usersUpdated);
 
   // Event when a user identifies themselves
   socket.on('identify', function(name){
-    if (name !== '') {
-      onlineUsers[socket.id].name = name;
-    } else {
-      onlineUsers[socket.id].name = 'Anonymous';
+    if (name === '') {
+      name = 'Anonymous';
     }
-    updateUserList();
+
+    var query = {
+      socket_id: socket.id
+    };
+
+    var update = {
+      $set: {
+        name: name
+      }
+    };
+
+    // Update user in db
+    db.users.update(query, update, {}, usersUpdated);
   });
 
   // Event when a user identifies themselves
   socket.on('locate', function(geolocation){
-    console.log(geolocation);
-    onlineUsers[socket.id].location = geolocation;
-    updateUserList();
+    var query = {
+      socket_id: socket.id
+    };
+
+    var update = {
+      $set: {
+        location: geolocation
+      }
+    };
+
+    // Update user in db
+    db.users.update(query, update, {}, usersUpdated);
   });
 
   // Event when a user disconnects
   socket.on('disconnect', function(){
     console.log('user disconnected');
-    // Remove them from user list
-    delete onlineUsers[socket.id];
+    // Remove disconnected user from db
+    db.users.remove({socket_id: socket.id}, {}, usersUpdated);
   });
 });
 
 // Start server listening on port 3000
-http.listen(3000, function(){
+server.listen(3000, function(){
   console.log('listening on port 3000');
 });
