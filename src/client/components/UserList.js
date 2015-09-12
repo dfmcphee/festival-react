@@ -1,18 +1,20 @@
-// UserList component
-var UserList = React.createClass({
+import React from 'react';
+import ListItem from './ListItem';
+
+export default class UserList extends React.Component {
   // Render a single user list item
-  renderItem: function(user) {
+  renderItem(user) {
     return (
       <ListItem user={user} />
     )
-  },
+  }
 
   // Render user list component
-  render: function(){
+  render() {
     return (
       <div>
         {this.props.users.map(this.renderItem)}
       </div>
     )
   }
-});
+}

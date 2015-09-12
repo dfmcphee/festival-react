@@ -1,16 +1,21 @@
-var socket = io();
+import React from 'react';
+import _ from 'underscore';
+import UserList from './UserList';
+import io from 'socket.io-client';
+var socket = io('http://localhost:3000');
 
 // The top level festival component
-var Festival = React.createClass({
+export default class Festival extends React.Component {
   // Set default state for component
-  getInitialState: function(){
-    return {
+  constructor(props) {
+    super(props);
+    this.state = {
       users: []
-    }
-  },
+    };
+  }
 
   // Event fired before component is loaded
-  componentWillMount: function(){
+  componentWillMount(){
     // If the browser geolocation API is available
     if ("geolocation" in navigator) {
       // Watch for changes in location
@@ -23,21 +28,21 @@ var Festival = React.createClass({
       });
     }
     // Update user list on change from server
-    socket.on('onlineUsersUpdated', this.updateUsers);
-  },
+    socket.on('onlineUsersUpdated', ::this.updateUsers);
+  }
 
   // Send event to update user's name
-  updateName: function(event) {
+  updateName(event) {
     socket.emit('identify', event.target.value);
-  },
+  }
 
   // Update user list stored in state
-  updateUsers: function(data){
+  updateUsers(data) {
     this.setState({users: _.values(data.onlineUsers)});
-  },
+  }
 
   // Render the markup for component
-  render: function(){
+  render() {
     return (
       <div className="user-list">
         <input type="text" placeholder="Enter your name" onChange={this.updateName}/>
@@ -45,6 +50,4 @@ var Festival = React.createClass({
       </div>
     );
   }
-});
-
-React.render(<Festival/>, document.getElementById('mount'));
+}
