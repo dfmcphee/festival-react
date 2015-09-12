@@ -2,7 +2,8 @@ import React from 'react';
 import _ from 'underscore';
 import UserList from './UserList';
 import io from 'socket.io-client';
-var socket = io('http://localhost:3000');
+
+var socket = io();
 
 // The top level festival component
 export default class Festival extends React.Component {

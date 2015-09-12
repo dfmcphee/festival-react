@@ -1,8 +1,11 @@
 import express from 'express';
 import React from 'react';
+import http from 'http';
+import io from 'socket.io';
+
 var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var server = http.Server(app);
+var sockets = io(server);
 
 app.use(express.static('views'));
 
@@ -11,13 +14,13 @@ var onlineUsers = {};
 
 // Send an updated userlist to all clients
 function updateUserList() {
-  io.emit('onlineUsersUpdated', {
+  sockets.emit('onlineUsersUpdated', {
     onlineUsers: onlineUsers
   });
 }
 
 // Event every time a user connects
-io.on('connection', function(socket){
+sockets.on('connection', function(socket){
   console.log('a user connected');
 
   // Add connected user to list
@@ -55,6 +58,6 @@ io.on('connection', function(socket){
 });
 
 // Start server listening on port 3000
-http.listen(3000, function(){
+server.listen(3000, function(){
   console.log('listening on port 3000');
 });
