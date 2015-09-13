@@ -2,6 +2,7 @@ import express from 'express';
 import React from 'react';
 import http from 'http';
 import io from 'socket.io';
+import UserList from '../models/UserList.js';
 
 var app = express();
 var server = http.Server(app);
@@ -15,58 +16,39 @@ app.get('/', function(req, res) {
   if (process.env.NODE_ENV !== 'production') {
     appScript = 'http://localhost:8080' + appScript;
   }
-  
+
   res.render('index.html.ejs', {
     appScript: appScript
   });
 });
 
-// Initialize empty user list
-var onlineUsers = {};
-
-// Send an updated userlist to all clients
-function updateUserList() {
-  sockets.emit('onlineUsersUpdated', {
-    onlineUsers: onlineUsers
+var sendUpdatedUserList = function(){
+  this.sockets.emit('onlineUsersUpdated', {
+    onlineUsers: this.onlineUsers
   });
 }
+
+var Users = new UserList(sendUpdatedUserList);
 
 // Event every time a user connects
 sockets.on('connection', function(socket){
   console.log('a user connected');
-
-  // Add connected user to list
-  onlineUsers[socket.id] = {
-    id: socket.id,
-    name: 'Anonymous',
-    location: false
-  };
-
-  updateUserList();
+  Users.addUser(socket.id);
 
   // Event when a user identifies themselves
   socket.on('identify', function(name){
-    if (name !== '') {
-      onlineUsers[socket.id].name = name;
-    } else {
-      onlineUsers[socket.id].name = 'Anonymous';
-    }
-    updateUserList();
+    Users.updateName(socket.id, name);
   });
 
   // Event when a user identifies themselves
   socket.on('locate', function(geolocation){
-    console.log(geolocation);
-    onlineUsers[socket.id].location = geolocation;
-    updateUserList();
+    Users.updateLocation(socket.id, geolocation);
   });
 
   // Event when a user disconnects
   socket.on('disconnect', function(){
     console.log('user disconnected');
-    // Remove them from user list
-    delete onlineUsers[socket.id];
-    updateUserList();
+    Users.removeUser(socket.id);
   });
 });
 
