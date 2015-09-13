@@ -10,7 +10,8 @@
     "dev-server": "node lib/server/webpack",
     "server": "nodemon lib/server/server",
     "start": "npm run watch-js & npm run dev-server & npm run server",
-    "build": "npm run clean && ./node_modules/.bin/babel src -d lib --experimental"
+    "build": "NODE_ENV=production webpack -p --config webpack.config.production.js",
+    "prod-server": "./node_modules/.bin/babel src/server/server.js | node"
   },
   "license": "MIT",
   "devDependencies": {

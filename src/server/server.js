@@ -7,7 +7,7 @@ var app = express();
 var server = http.Server(app);
 var sockets = io(server);
 
-app.use(express.static('views'));
+app.use(express.static('public'));
 
 // Initialize empty user list
 var onlineUsers = {};
@@ -57,7 +57,7 @@ sockets.on('connection', function(socket){
   });
 });
 
-// Start server listening on port 3000
-server.listen(3000, function(){
-  console.log('listening on port 3000');
+// Start server
+server.listen((process.env.PORT || 3000), function(){
+  console.log('Server started.');
 });
