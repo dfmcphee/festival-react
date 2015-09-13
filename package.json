@@ -13,7 +13,7 @@
     "start": "npm run watch-js & npm run dev-server & npm run server",
     "build-client": "NODE_ENV=production webpack -p --config webpack.config.production.js",
     "build-server": "babel src/server/server.js --out-file lib/server/server.js",
-    "prod-deploy": "npm run build-client & run build-server & npm run prod-server"
+    "prod-deploy": "npm run build-client & npm run build-server & npm run prod-server"
   },
   "license": "MIT",
   "engines" : { "node" : "^2.4.0" },
