@@ -7,7 +7,19 @@ var app = express();
 var server = http.Server(app);
 var sockets = io(server);
 
+app.set('view engine', 'ejs');
 app.use(express.static('public'));
+
+app.get('/', function(req, res) {
+  var appScript = '/js/app.js';
+  if (process.env.NODE_ENV !== 'production') {
+    appScript = 'http://localhost:8080' + appScript;
+  }
+  
+  res.render('index.html.ejs', {
+    appScript: appScript
+  });
+});
 
 // Initialize empty user list
 var onlineUsers = {};
@@ -54,6 +66,7 @@ sockets.on('connection', function(socket){
     console.log('user disconnected');
     // Remove them from user list
     delete onlineUsers[socket.id];
+    updateUserList();
   });
 });
 
