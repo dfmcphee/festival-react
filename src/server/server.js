@@ -2,7 +2,7 @@ import express from 'express';
 import React from 'react';
 import http from 'http';
 import io from 'socket.io';
-import UserList from '../models/UserList.js';
+import UserList from './models/UserList.js';
 
 var app = express();
 var server = http.Server(app);
