@@ -23,7 +23,7 @@ app.get('/', function(req, res) {
 });
 
 var sendUpdatedUserList = function(){
-  this.sockets.emit('onlineUsersUpdated', {
+  sockets.emit('onlineUsersUpdated', {
     onlineUsers: this.onlineUsers
   });
 }
