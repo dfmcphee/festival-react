@@ -9,10 +9,10 @@
     "watch-js": "./node_modules/.bin/babel src -d lib --experimental -w",
     "dev-server": "node lib/server/webpack",
     "server": "nodemon lib/server/server",
-    "prod-server": "node lib/server/server",
+    "prod-server": "NODE_ENV=production node lib/server/server",
     "start": "npm run watch-js & npm run dev-server & npm run server",
-    "build-client": "NODE_ENV=production webpack -p --config webpack.config.production.js",
-    "build-server": "./node_modules/.bin/babel src/server/server.js --out-file lib/server/server.js",
+    "build-client": "webpack -p --config webpack.config.production.js",
+    "build-server": "./node_modules/.bin/babel src/server --out-dir lib/server",
     "prod-deploy": "npm run build-client ; npm run build-server ; npm run prod-server"
   },
   "license": "MIT",
