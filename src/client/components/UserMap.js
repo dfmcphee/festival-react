@@ -16,7 +16,7 @@ export default class UserMap extends React.Component {
       }}
       ref="map"
       defaultZoom={18}
-      center={this.props.mapCenter}>
+      defaultCenter={this.props.mapCenter}>
       {
         this.props.markers.map((marker, index) => {
           return (

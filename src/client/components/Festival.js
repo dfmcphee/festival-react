@@ -13,9 +13,18 @@ export default class Festival extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      users: [],
+      users: [{
+        name: 'Steve',
+        location: {
+          latitude: 45.4215296,
+          longitude: -75.6971931
+        }
+      }],
       markers: [],
-      mapCenter: {lat: 45.4215296, lng: -75.6971931}
+      mapCenter: {
+        lat: 45.4215296,
+        lng: -75.6971931
+      }
     };
   }
 
@@ -64,7 +73,7 @@ export default class Festival extends React.Component {
             lat: user.location.latitude,
             lng: user.location.longitude,
           },
-          defaultAnimation: 2,
+          defaultAnimation: 0,
           key: user.name
         });
 
