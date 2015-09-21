@@ -5,7 +5,7 @@ export default class UserList extends React.Component {
   // Render a single user list item
   renderItem(user) {
     return (
-      <ListItem user={user} />
+      <ListItem user={user} currentLocation={this.props.currentLocation} />
     )
   }
 
@@ -13,7 +13,7 @@ export default class UserList extends React.Component {
   render() {
     return (
       <div>
-        {this.props.users.map(this.renderItem)}
+        {this.props.users.map(::this.renderItem)}
       </div>
     )
   }
