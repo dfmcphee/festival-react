@@ -13,13 +13,7 @@ export default class Festival extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      users: [{
-        name: 'Steve',
-        location: {
-          latitude: 45.4215296,
-          longitude: -75.6971931
-        }
-      }],
+      users: [],
       markers: [],
       mapCenter: {
         lat: 45.4215296,
@@ -64,7 +58,6 @@ export default class Festival extends React.Component {
     var users = _.values(data.onlineUsers);
     var markers = [];
     var locations = [];
-    var center = {lat: 45.4215296, lng: -75.6971931};
 
     users.map((user, index) => {
       if (user.location) {
@@ -84,18 +77,9 @@ export default class Festival extends React.Component {
       }
     });
 
-    if (locations.length) {
-      var calcCenter = geolib.getCenter(locations);
-      center = {
-        lat: parseFloat(calcCenter.latitude),
-        lng: parseFloat(calcCenter.longitude)
-      }
-    }
-
     this.setState({
       users: users,
-      markers: markers,
-      mapCenter: center
+      markers: markers
     });
   }
 
