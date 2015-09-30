@@ -36,6 +36,8 @@ export default class Festival extends React.Component {
     }
     // Update user list on change from server
     socket.on('onlineUsersUpdated', ::this.updateUsers);
+
+    socket.on('socketConnected', (data) => console.log(data));
   }
 
   updateLocation(position) {
