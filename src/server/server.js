@@ -35,6 +35,10 @@ sockets.on('connection', function(socket){
   console.log('a user connected');
   Users.addUser(socket.id);
 
+  socket.emit('socketConnected', {
+    socketId: socket.id
+  });
+
   // Event when a user identifies themselves
   socket.on('identify', function(name){
     Users.updateName(socket.id, name);
