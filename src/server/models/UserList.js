@@ -2,6 +2,7 @@ export default class UserList {
 
   constructor(sendUpdatedList) {
     this.sendUpdatedList = sendUpdatedList;
+    this.sendNewLocation = sendNewLocation;
     this.onlineUsers = {};
   }
 
@@ -30,6 +31,9 @@ export default class UserList {
   }
 
   updateLocation(id, geolocation) {
+    if (!this.onlineUsers[id].location) {
+      this.sendNewLocation({location: geolocation});
+    }
     this.onlineUsers[id].location = geolocation;
     this.updateUserList();
   }

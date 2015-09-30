@@ -28,7 +28,13 @@ var sendUpdatedUserList = function(){
   });
 }
 
-var Users = new UserList(sendUpdatedUserList);
+var sendNewLocation = function(location){
+  sockets.emit('newLocation', {
+    location: location
+  });
+}
+
+var Users = new UserList(sendUpdatedUserList, sendNewLocation);
 
 // Event every time a user connects
 sockets.on('connection', function(socket){
@@ -45,7 +51,7 @@ sockets.on('connection', function(socket){
   });
 
   // Event when a user identifies themselves
-  socket.on('locate', function(geolocation){
+  socket.on('locate', function(geolocation) {
     Users.updateLocation(socket.id, geolocation);
   });
 
