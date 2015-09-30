@@ -1,6 +1,6 @@
 export default class UserList {
 
-  constructor(sendUpdatedList) {
+  constructor(sendUpdatedList, sendNewLocation) {
     this.sendUpdatedList = sendUpdatedList;
     this.sendNewLocation = sendNewLocation;
     this.onlineUsers = {};
