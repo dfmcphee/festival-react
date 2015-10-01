@@ -20,7 +20,7 @@ describe('UserList', function() {
 
   it('can update user location', function() {
     var UserList = require('../../src/server/models/UserList.js');
-    var Users = new UserList(callback);
+    var Users = new UserList(callback, callback);
 
     var location = {
       latitude: 13.56,
