@@ -6,9 +6,9 @@ export default class ListItem extends React.Component {
     var time = distance / 80;
 
     if (time < 1) {
-      time = 'Less than a minute walk'
+      time = "Less than a minute walk"
     } else {
-      time = '${Math.round(time)} minute walk'
+      time = `${Math.round(time)} minute walk`
     }
 
     return time;
