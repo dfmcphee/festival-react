@@ -42,7 +42,8 @@ sockets.on('connection', function(socket){
   Users.addUser(socket.id);
 
   socket.emit('socketConnected', {
-    socketId: socket.id
+    socketId: socket.id,
+    onlineUsers: Users.onlineUsers
   });
 
   // Event when a user identifies themselves
